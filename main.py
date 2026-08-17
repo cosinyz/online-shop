@@ -1,4 +1,7 @@
-class Product:
+from abc import ABC, abstractmethod
+
+
+class Product(ABC):
     def __init__(self, name, price, stock, category):
         self.name = name
         self._price = 0
@@ -8,12 +11,13 @@ class Product:
         self.set_price(price)
         self.set_stock(stock)
 
+    @abstractmethod
     def show_info(self):
-        print(f"Товар: {self.name}")
-        print(f"Цена: {self._price:.2f} сом")
-        print(f"На складе: {self._stock} шт.")
-        print(f"Категория: {self.category}")
-        print("-" * 30)
+        pass
+
+    @abstractmethod
+    def calculate_discount(self):
+        pass
 
     def get_price(self):
         return self._price
@@ -50,6 +54,11 @@ class Product:
 
     def is_available(self):
         return self._stock > 0
+
+    def get_final_price(self):
+        discount = self.calculate_discount()
+        return self._price * (1 - discount)
+
 
 
 class User:
@@ -111,7 +120,8 @@ class Order:
             print(f"Товар «{product.name}» удалён из заказа.")
 
     def get_total(self):
-        return sum(product.get_price() for product in self.products)
+        return sum(product.get_final_price() for product in self.products)
+
 
 
     def change_status(self, new_status):
@@ -156,6 +166,10 @@ class Electronics(Product):
         self.warranty_months = warranty_months
         self.manufacturer = manufacturer
 
+    def calculate_discount(self):
+     return 0.20
+
+
     def show_info(self):
         print("===== ЭЛЕКТРОНИКА =====")
         print(f"Название: {self.name}")
@@ -174,6 +188,10 @@ class Clothing(Product):
         self.material = material
         self.color = color
 
+    def calculate_discount(self):
+     return 0.20
+
+
     def show_info(self):
         print("===== ОДЕЖДА =====")
         print(f"Название: {self.name}")
@@ -191,6 +209,10 @@ class Food(Product):
         super().__init__(name, price, stock, category)
         self.expiration_date = expiration_date
         self.weight = weight
+
+    def calculate_discount(self):
+     return 0.05
+
 
     def show_info(self):
         print("===== ПРОДУКТ =====")
