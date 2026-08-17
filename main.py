@@ -1,37 +1,56 @@
 class Product:
     def __init__(self, name, price, stock, category):
         self.name = name
-        self.price = price
-        self.stock = stock
+        self._price = 0
+        self._stock = 0
         self.category = category
+
+        self.set_price(price)
+        self.set_stock(stock)
 
     def show_info(self):
         print(f"Товар: {self.name}")
-        print(f"Цена: {self.price:.2f} сом")
-        print(f"На складе: {self.stock} шт.")
+        print(f"Цена: {self._price:.2f} сом")
+        print(f"На складе: {self._stock} шт.")
         print(f"Категория: {self.category}")
         print("-" * 30)
 
+    def get_price(self):
+        return self._price
+
+    def set_price(self, new_price):
+        if new_price < 0:
+            raise ValueError("Цена не может быть отрицательной.")
+        self._price = new_price
+
+    def get_stock(self):
+        return self._stock
+
+    def set_stock(self, new_stock):
+        if new_stock < 0:
+            raise ValueError("Количество товара не может быть отрицательным.")
+        self._stock = new_stock
+
     def change_price(self, new_price):
-        if new_price >= 0:
-            self.price = new_price
-        else:
-            print("Цена не может быть отрицательной.")
+        self.set_price(new_price)
 
     def increase_stock(self, amount):
-        if amount > 0:
-            self.stock += amount
-        else:
-            print("Количество должно быть положительным.")
+        if amount <= 0:
+            raise ValueError("Количество должно быть положительным.")
+        self._stock += amount
 
     def decrease_stock(self, amount):
-        if amount > 0 and amount <= self.stock:
-            self.stock -= amount
-        else:
-            print("Недостаточно товара на складе.")
+        if amount <= 0:
+            raise ValueError("Количество должно быть положительным.")
+
+        if amount > self._stock:
+            raise ValueError("Недостаточно товара на складе.")
+
+        self._stock -= amount
 
     def is_available(self):
-        return self.stock > 0
+        return self._stock > 0
+
 
 class User:
     def __init__(self, name, email, balance=0):
@@ -79,7 +98,8 @@ class Order:
             print(f"Товар «{product.name}» удалён из заказа.")
 
     def get_total(self):
-        return sum(product.price for product in self.products)
+        return sum(product.get_price() for product in self.products)
+
 
     def change_status(self, new_status):
         self.status = new_status
@@ -90,7 +110,8 @@ class Order:
         print(f"Статус: {self.status}")
 
         for product in self.products:
-            print(f"- {product.name}: {product.price:.2f} сом")
+            print(f"- {product.name}: {product.get_price()
+} сом")
 
         print(f"Итого: {self.get_total():.2f} сом")
 
