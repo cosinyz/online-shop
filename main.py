@@ -133,8 +133,8 @@ class Order:
         print(f"Статус: {self.status}")
 
         for product in self.products:
-            print(f"- {product.name}: {product.get_price()
-} сом")
+         print(f"- {product.name}: {product.get_price():.2f} сом")
+
 
         print(f"Итого: {self.get_total():.2f} сом")
 
@@ -167,14 +167,14 @@ class Electronics(Product):
         self.manufacturer = manufacturer
 
     def calculate_discount(self):
-     return 0.20
+     return 0.10
 
 
     def show_info(self):
         print("===== ЭЛЕКТРОНИКА =====")
         print(f"Название: {self.name}")
-        print(f"Цена: {self.price:.2f} сом")
-        print(f"Количество: {self.stock} шт.")
+        print(f"Цена: {self.get_price():.2f} сом")
+        print(f"Количество: {self.get_stock()} шт.")
         print(f"Категория: {self.category}")
         print(f"Производитель: {self.manufacturer}")
         print(f"Гарантия: {self.warranty_months} мес.")
@@ -195,8 +195,8 @@ class Clothing(Product):
     def show_info(self):
         print("===== ОДЕЖДА =====")
         print(f"Название: {self.name}")
-        print(f"Цена: {self.price:.2f} сом")
-        print(f"Количество: {self.stock} шт.")
+        print(f"Цена: {self.get_price():.2f} сом")
+        print(f"Количество: {self.get_stock()} шт.")
         print(f"Категория: {self.category}")
         print(f"Размер: {self.size}")
         print(f"Материал: {self.material}")
@@ -217,12 +217,165 @@ class Food(Product):
     def show_info(self):
         print("===== ПРОДУКТ =====")
         print(f"Название: {self.name}")
-        print(f"Цена: {self.price:.2f} сом")
-        print(f"Количество: {self.stock} шт.")
+        print(f"Цена: {self.get_price():.2f} сом")
+        print(f"Количество: {self.get_stock()} шт.")
         print(f"Категория: {self.category}")
         print(f"Срок годности: {self.expiration_date}")
         print(f"Вес: {self.weight} кг")
         print()
+
+
+phone = Electronics(
+    "Samsung Galaxy S25",
+    55000,
+    5,
+    "Смартфоны",
+    24,
+    "Samsung"
+)
+
+laptop = Electronics(
+    "Lenovo IdeaPad",
+    45000,
+    3,
+    "Ноутбуки",
+    12,
+    "Lenovo"
+)
+
+tshirt = Clothing(
+    "Футболка",
+    1500,
+    20,
+    "Одежда",
+    "L",
+    "Хлопок",
+    "Чёрный"
+)
+
+jeans = Clothing(
+    "Джинсы",
+    3000,
+    10,
+    "Одежда",
+    "M",
+    "Деним",
+    "Синий"
+)
+
+milk = Food(
+    "Молоко",
+    100,
+    30,
+    "Молочные продукты",
+    "17.09.2026",
+    1
+)
+
+bread = Food(
+    "Хлеб",
+    80,
+    25,
+    "Хлебобулочные изделия",
+    "20.08.2026",
+    0.5
+)
+
+products = [phone, laptop, tshirt, jeans, milk, bread]
+
+print("===== ТОВАРЫ =====")
+
+for product in products:
+    product.show_info()
+    print(f"Цена со скидкой: {product.get_final_price():.2f} сом")
+    print()
+
+user1 = User(
+    "Байтур",
+    "baytur@example.com",
+    100000
+)
+
+user2 = User(
+    "Alex",
+    "alex@example.com",
+    50000
+)
+
+print("===== ПОЛЬЗОВАТЕЛИ =====")
+
+user1.show_info()
+user2.show_info()
+
+user1.deposit(10000)
+
+print("После пополнения:")
+user1.show_info()
+
+order1 = Order(user1)
+
+order1.add_product(phone)
+order1.add_product(tshirt)
+order1.add_product(milk)
+
+print("===== ЗАКАЗ 1 =====")
+order1.show_info()
+
+print(f"Стоимость со скидками: {order1.get_total():.2f} сом")
+
+order1.change_status("В обработке")
+
+print("Статус заказа:")
+order1.show_info()
+
+order1.checkout()
+
+print("===== ПОСЛЕ ОПЛАТЫ =====")
+user1.show_info()
+order1.show_info()
+
+order2 = Order(user2)
+
+order2.add_product(laptop)
+order2.add_product(jeans)
+order2.add_product(bread)
+
+print("===== ЗАКАЗ 2 =====")
+order2.show_info()
+
+print(f"Стоимость со скидками: {order2.get_total():.2f} сом")
+
+order2.change_status("Подтверждён")
+order2.show_info()
+
+print("===== ПРОВЕРКА КОЛИЧЕСТВА =====")
+print(f"Телефонов на складе: {phone.get_stock()}")
+
+phone.increase_stock(2)
+
+print(f"После пополнения: {phone.get_stock()}")
+
+phone.decrease_stock(1)
+
+print(f"После уменьшения: {phone.get_stock()}")
+
+print("===== ПРОВЕРКА ОШИБКИ =====")
+
+try:
+    phone.set_price(-1000)
+except ValueError as error:
+    print(f"Ошибка: {error}")
+
+try:
+    user2.set_balance(-5000)
+except ValueError as error:
+    print(f"Ошибка: {error}")
+
+try:
+    milk.decrease_stock(1000)
+except ValueError as error:
+    print(f"Ошибка: {error}")
+
 
 
 
