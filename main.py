@@ -32,3 +32,30 @@ class Product:
 
     def is_available(self):
         return self.stock > 0
+
+class User:
+    def __init__(self, name, email, balance=0):
+        self.name = name
+        self.email = email
+        self.balance = balance
+
+    def deposit(self, amount):
+        if amount > 0:
+            self.balance += amount
+            print(f"Баланс пополнен на {amount:.2f} сом.")
+        else:
+            print("Сумма пополнения должна быть положительной.")
+
+    def withdraw(self, amount):
+        if amount <= self.balance:
+            self.balance -= amount
+            return True
+        else:
+            print("Недостаточно средств.")
+            return False
+
+    def show_info(self):
+        print(f"Пользователь: {self.name}")
+        print(f"Email: {self.email}")
+        print(f"Баланс: {self.balance:.2f} сом")
+        print("-" * 30)
