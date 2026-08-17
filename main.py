@@ -59,3 +59,59 @@ class User:
         print(f"Email: {self.email}")
         print(f"Баланс: {self.balance:.2f} сом")
         print("-" * 30)
+
+class Order:
+    def __init__(self, user):
+        self.user = user
+        self.products = []
+        self.status = "Новый"
+
+    def add_product(self, product):
+        if product.is_available():
+            self.products.append(product)
+            print(f"Товар «{product.name}» добавлен в заказ.")
+        else:
+            print(f"Товар «{product.name}» отсутствует на складе.")
+
+    def remove_product(self, product):
+        if product in self.products:
+            self.products.remove(product)
+            print(f"Товар «{product.name}» удалён из заказа.")
+
+    def get_total(self):
+        return sum(product.price for product in self.products)
+
+    def change_status(self, new_status):
+        self.status = new_status
+
+    def show_info(self):
+        print("===== ЗАКАЗ =====")
+        print(f"Покупатель: {self.user.name}")
+        print(f"Статус: {self.status}")
+
+        for product in self.products:
+            print(f"- {product.name}: {product.price:.2f} сом")
+
+        print(f"Итого: {self.get_total():.2f} сом")
+
+    def checkout(self):
+        total = self.get_total()
+
+        if not self.products:
+            print("Заказ пуст.")
+            return
+
+        for product in self.products:
+            if not product.is_available():
+                print(f"Товар {product.name} закончился.")
+                return
+
+        if self.user.withdraw(total):
+            for product in self.products:
+                product.decrease_stock(1)
+
+            self.change_status("Оплачен")
+            print(f"Заказ оформлен на сумму {total:.2f} сом.")
+        else:
+            print("Недостаточно средств.")
+
