@@ -56,28 +56,41 @@ class User:
     def __init__(self, name, email, balance=0):
         self.name = name
         self.email = email
-        self.balance = balance
+        self._balance = 0
+        self.set_balance(balance)
+
+    def get_balance(self):
+        return self._balance
+
+    def set_balance(self, new_balance):
+        if new_balance < 0:
+            raise ValueError("Баланс не может быть отрицательным.")
+        self._balance = new_balance
 
     def deposit(self, amount):
-        if amount > 0:
-            self.balance += amount
-            print(f"Баланс пополнен на {amount:.2f} сом.")
-        else:
-            print("Сумма пополнения должна быть положительной.")
+        if amount <= 0:
+            raise ValueError("Сумма пополнения должна быть положительной.")
+
+        self._balance += amount
+        print(f"Баланс пополнен на {amount:.2f} сом.")
 
     def withdraw(self, amount):
-        if amount <= self.balance:
-            self.balance -= amount
-            return True
-        else:
+        if amount <= 0:
+            raise ValueError("Сумма списания должна быть положительной.")
+
+        if amount > self._balance:
             print("Недостаточно средств.")
             return False
+
+        self._balance -= amount
+        return True
 
     def show_info(self):
         print(f"Пользователь: {self.name}")
         print(f"Email: {self.email}")
-        print(f"Баланс: {self.balance:.2f} сом")
+        print(f"Баланс: {self._balance:.2f} сом")
         print("-" * 30)
+
 
 class Order:
     def __init__(self, user):
