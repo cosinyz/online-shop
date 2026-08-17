@@ -122,6 +122,16 @@ class Electronics(Product):
         self.warranty_months = warranty_months
         self.manufacturer = manufacturer
 
+    def show_info(self):
+        print("===== ЭЛЕКТРОНИКА =====")
+        print(f"Название: {self.name}")
+        print(f"Цена: {self.price:.2f} сом")
+        print(f"Количество: {self.stock} шт.")
+        print(f"Категория: {self.category}")
+        print(f"Производитель: {self.manufacturer}")
+        print(f"Гарантия: {self.warranty_months} мес.")
+        print()
+
 
 class Clothing(Product):
     def __init__(self, name, price, stock, category, size, material, color):
@@ -130,11 +140,33 @@ class Clothing(Product):
         self.material = material
         self.color = color
 
+    def show_info(self):
+        print("===== ОДЕЖДА =====")
+        print(f"Название: {self.name}")
+        print(f"Цена: {self.price:.2f} сом")
+        print(f"Количество: {self.stock} шт.")
+        print(f"Категория: {self.category}")
+        print(f"Размер: {self.size}")
+        print(f"Материал: {self.material}")
+        print(f"Цвет: {self.color}")
+        print()
+
 
 class Food(Product):
     def __init__(self, name, price, stock, category, expiration_date, weight):
         super().__init__(name, price, stock, category)
         self.expiration_date = expiration_date
         self.weight = weight
+
+    def show_info(self):
+        print("===== ПРОДУКТ =====")
+        print(f"Название: {self.name}")
+        print(f"Цена: {self.price:.2f} сом")
+        print(f"Количество: {self.stock} шт.")
+        print(f"Категория: {self.category}")
+        print(f"Срок годности: {self.expiration_date}")
+        print(f"Вес: {self.weight} кг")
+        print()
+
 
 
