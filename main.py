@@ -115,3 +115,26 @@ class Order:
         else:
             print("Недостаточно средств.")
 
+
+class Electronics(Product):
+    def __init__(self, name, price, stock, category, warranty_months, manufacturer):
+        super().__init__(name, price, stock, category)
+        self.warranty_months = warranty_months
+        self.manufacturer = manufacturer
+
+
+class Clothing(Product):
+    def __init__(self, name, price, stock, category, size, material, color):
+        super().__init__(name, price, stock, category)
+        self.size = size
+        self.material = material
+        self.color = color
+
+
+class Food(Product):
+    def __init__(self, name, price, stock, category, expiration_date, weight):
+        super().__init__(name, price, stock, category)
+        self.expiration_date = expiration_date
+        self.weight = weight
+
+
